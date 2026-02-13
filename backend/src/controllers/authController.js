@@ -12,7 +12,7 @@ exports.register = async (req, res, next)=>{
 
         const existingUser = await User.findOne({ email })
         if(existingUser){
-            throw new AppError('Email already registered', 400);
+            throw new AppError('Email already registered', 200);
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
