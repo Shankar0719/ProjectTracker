@@ -1,9 +1,9 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const AppError = require('../utils/AppError')
+const asyncHandler = require("../middleware/asyncHandler")
 
-exports.register = async (req, res, next)=>{
-    try{
+exports.register =  asyncHandler(async (req, res, next)=>{
         const {name, email, password, role} = req.body;
 
         if(!name || !email || !password){
@@ -12,7 +12,7 @@ exports.register = async (req, res, next)=>{
 
         const existingUser = await User.findOne({ email })
         if(existingUser){
-            throw new AppError('Email already registered', 200);
+            throw new AppError('Email already registered', 400);
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
